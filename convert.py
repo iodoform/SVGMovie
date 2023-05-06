@@ -27,7 +27,7 @@ def save_all_frames(video_path, dir_path, basename, ext='jpg'):
         
 def convert_jpg2svg(dir_path,prefix,result_path,api_kei):
     frames = len(glob.glob(f"{dir_path}/*.jpg"))
-    for i in range(frames, result_path, ):
+    for i in range(frames):
         response = requests.post(
             'https://vectorizer.ai/api/v1/vectorize',
             files={'image': open(f"{dir_path}/{prefix}_{str(i).zfill(2)}.jpg", 'rb')},
@@ -38,7 +38,7 @@ def convert_jpg2svg(dir_path,prefix,result_path,api_kei):
         )
         if response.status_code == requests.codes.ok:
             # Save result
-            os.makedirs(dir_path, exist_ok=True)
+            os.makedirs(result_path, exist_ok=True)
             with open(f'{result_path}/result{i}.svg', 'wb') as out:
                 out.write(response.content)
                 i+=1
@@ -50,7 +50,7 @@ def convert_jpg2svg(dir_path,prefix,result_path,api_kei):
                 break
 
 if __name__ == "__main__": 
-    movie_path = 'sampleMovie.mov'#変換したい動画のファイルパス
+    movie_path = ''#変換したい動画のファイルパス
     dir_path = 'resultimg'
     result_path = 'result'
     prefix = 'sample_video_img'
